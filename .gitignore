@@ -1,0 +1,7 @@
+.vs/
+packages/
+TomSwiftUnderMilkWood/bin/
+TomSwiftUnderMilkWood/obj/
+TomSwiftUnderMilkWood_Tests/bin/
+TomSwiftUnderMilkWood_Tests/node_modules/
+TomSwiftUnderMilkWood_Tests/obj/
