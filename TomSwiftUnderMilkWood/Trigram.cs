@@ -39,29 +39,38 @@ namespace TomSwiftUnderMilkWood
 
         }
 
-        public string BuildRandomReturnString(Dictionary<string, List<string>> trigramStruct)
+        public string BuildRandomReturnString(Dictionary<string, List<string>> trigramStruct, string returnString)
         {
             var value = string.Empty;
             KeyValuePair<string, List<string>> keyValuePair = GetRandomKeyValuePair(trigramStruct);
             var key = keyValuePair.Key;
-            var returnString = key;
-
-            do
+            returnString += " "+key;
+            if (trigramStruct.Count() > 0)
             {
-                value = GetRandomValueFromKeyValuePair(key, trigramStruct);
 
-                if (!string.IsNullOrWhiteSpace(value))
+                do
                 {
-                    returnString += " " + value;
+                    value = GetRandomValueFromKeyValuePair(key, trigramStruct);
 
-                    key = key.Substring(key.LastIndexOf(' ') + 1) + " " + value;
+                    if (!string.IsNullOrWhiteSpace(value))
+                    {
+                        returnString += " " + value;
+
+                        key = key.Substring(key.LastIndexOf(' ') + 1) + " " + value;
+                    }
+
+
+                } while (!string.IsNullOrEmpty(value));
+
+                if (string.IsNullOrEmpty(value))
+                {
+                    return BuildRandomReturnString(trigramStruct, returnString);
                 }
+            }
 
 
-            } while (!string.IsNullOrEmpty(value));
-
-            return returnString.Trim(" ".ToCharArray());
-        }
+         return returnString.Trim(" ".ToCharArray());
+    }
 
         public (string key,string value) FindWords(string workingString, int wordsToSkip)
         {
@@ -81,6 +90,10 @@ namespace TomSwiftUnderMilkWood
 
         public KeyValuePair<string, List<string>> GetRandomKeyValuePair(Dictionary<string, List<string>> trigramStruct)
         {
+            if (trigramStruct.Count ==0)
+            {
+                return new KeyValuePair<string, List<string>>();
+            }
             Random random = new Random();
             int index = random.Next(trigramStruct.Count);
 
