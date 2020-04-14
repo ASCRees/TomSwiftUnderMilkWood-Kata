@@ -1,21 +1,24 @@
-﻿using System;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework;
-using TomSwiftUnderMilkWood;
-
-namespace TomSwiftUnderMilkWood.Tests
+﻿namespace TomSwiftUnderMilkWood_Tests
 {
-    [TestFixture()]
-    public class Trigram_Tests
+    using NUnit.Framework;
+    using TomSwiftUnderMilkWood;
+    using FluentAssertions;
+    using TomSwiftUnderMilkWood.Interfaces;
+
+    [TestFixture]
+    public class TextGenerator_Tests
     {
-        Trigram trigram;
+
+        ITrigramGenerator trigram;
+        ITextGenerator textGenerator;
+
         string startingString = "I wish I may I wish I might";
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            trigram = new Trigram();
+            trigram = new TrigramGenerator();
+            textGenerator = new TextGenerator();
         }
 
         [Test()]
@@ -23,9 +26,9 @@ namespace TomSwiftUnderMilkWood.Tests
         {
             // Arrange
             var resultDictionary = trigram.BuildTrigram(startingString);
-            
+
             //Act
-            var keyValuePair = trigram.GetRandomKeyValuePair(resultDictionary);
+            var keyValuePair = textGenerator.GetRandomKeyValuePair(resultDictionary);
 
             // Assert
             keyValuePair.Key.Should().NotBeEmpty();
@@ -38,7 +41,7 @@ namespace TomSwiftUnderMilkWood.Tests
             var resultDictionary = trigram.BuildTrigram(startingString);
 
             //Act
-            var value = trigram.GetRandomValueFromKeyValuePair("I wish",resultDictionary);
+            var value = textGenerator.GetRandomValueFromKeyValuePair("I wish", resultDictionary);
 
             // Assert
             value.Should().Be("I");
@@ -50,9 +53,9 @@ namespace TomSwiftUnderMilkWood.Tests
             // Arrange
             var resultDictionary = trigram.BuildTrigram(startingString);
             var key = "I wish";
-            
+
             //Act
-            var value = trigram.GetRandomValueFromKeyValuePair(key, resultDictionary);
+            var value = textGenerator.GetRandomValueFromKeyValuePair(key, resultDictionary);
 
             // Assert
             resultDictionary[key].Count.Should().Be(1);
@@ -66,58 +69,11 @@ namespace TomSwiftUnderMilkWood.Tests
             var key = "may I";
 
             //Act
-            var value = trigram.GetRandomValueFromKeyValuePair(key, resultDictionary);
+            var value = textGenerator.GetRandomValueFromKeyValuePair(key, resultDictionary);
 
             // Assert
             resultDictionary.ContainsKey(key).Should().BeFalse();
         }
-
-        [Test]
-        public void Test_BuildTrigram()
-        {
-
-            // Act
-            var resultDictionary = trigram.BuildTrigram(startingString);
-
-            // Assert
-            resultDictionary.Count.Should().BeGreaterThan(0);
-        }
-
-
-
-        [Test]
-        public void Test_FindWords_First_Word_Key()
-        {
-
-            // Act
-            var resultTuple = trigram.FindWords(startingString,0);
-
-            // Assert
-            resultTuple.key.Should().Be("I wish");
-        }
-
-        [Test]
-        public void Test_FindWords_First_Words_Value()
-        {
-            // Act
-            var resultTuple = trigram.FindWords(startingString, 0);
-
-            // Assert
-            resultTuple.value.Should().Be("I");
-        }
-
-        [Test]
-        public void Test_FindWords_First_Last_Two_Words()
-        {
-
-            // Act
-            var resultTuple = trigram.FindWords(startingString, 7);
-
-            // Assert
-            resultTuple.key.Should().Be(string.Empty);
-
-        }
-
 
         [Test]
         public void Test_Build_Return_String()
@@ -126,11 +82,11 @@ namespace TomSwiftUnderMilkWood.Tests
 
             // Arrange
             var resultDictionary = trigram.BuildTrigram(startingString);
-            
+
             var returnValue = string.Empty;
 
             //Act
-            returnValue = trigram.BuildRandomReturnString(resultDictionary, returnValue);
+            returnValue = textGenerator.BuildRandomReturnString(resultDictionary, returnValue);
 
             // Assert
             returnValue.Length.Should().BeGreaterThan(1);
