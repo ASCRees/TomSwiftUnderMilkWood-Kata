@@ -72,7 +72,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Trigram_Tests.cs" />
+    <Compile Include="TextGenerator_Tests.cs" />
+    <Compile Include="TrigramGenerator_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
